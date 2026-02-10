@@ -28,6 +28,7 @@ public class AuthController {
     private final com.example.moneytransfer.repository.AccountRepository accountRepository;
 
     @PostMapping("/register")
+    @org.springframework.transaction.annotation.Transactional
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity.badRequest().body("Username already exists");
@@ -42,6 +43,8 @@ public class AuthController {
         // Create default account with 1000 balance
         com.example.moneytransfer.domain.Account account = new com.example.moneytransfer.domain.Account();
         account.setUser(user);
+        account.setHolderName(user.getUsername());
+        account.setStatus(com.example.moneytransfer.domain.enums.AccountStatus.ACTIVE);
         account.setBalance(new java.math.BigDecimal("1000.00"));
         accountRepository.save(account);
 
