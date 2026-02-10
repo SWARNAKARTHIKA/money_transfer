@@ -17,8 +17,8 @@ public class TransferController {
         this.transferService = transferService;
     }
     @PostMapping
-    public ResponseEntity<TransferResponse> executeTransfer(@Valid @RequestBody TransferRequest request) {
-        TransferResponse response = transferService.transfer(request);
+    public ResponseEntity<TransferResponse> executeTransfer(@Valid @RequestBody TransferRequest request, java.security.Principal principal) {
+        TransferResponse response = transferService.transfer(request, principal.getName());
         return ResponseEntity.ok(response);
     }
 }

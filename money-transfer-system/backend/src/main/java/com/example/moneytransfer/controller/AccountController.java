@@ -22,19 +22,24 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<AccountResponse>> getMyAccounts(java.security.Principal principal) {
+        return ResponseEntity.ok(accountService.getAccountsByUser(principal.getName()));
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<AccountResponse> getAccount(@PathVariable Long id) {
-        return ResponseEntity.ok(accountService.getAccount(id));
+    public ResponseEntity<AccountResponse> getAccount(@PathVariable Long id, java.security.Principal principal) {
+        return ResponseEntity.ok(accountService.getAccount(id, principal.getName()));
     }
 
     @GetMapping("/{id}/balance")
-    public ResponseEntity<BigDecimal> getBalance(@PathVariable Long id) {
-        return ResponseEntity.ok(accountService.getBalance(id));
+    public ResponseEntity<BigDecimal> getBalance(@PathVariable Long id, java.security.Principal principal) {
+        return ResponseEntity.ok(accountService.getBalance(id, principal.getName()));
     }
 
     @GetMapping("/{id}/transactions")
-    public ResponseEntity<List<TransactionLog>> getTransactions(@PathVariable Long id) {
-        return ResponseEntity.ok(accountService.getTransactions(id));
+    public ResponseEntity<List<TransactionLog>> getTransactions(@PathVariable Long id, java.security.Principal principal) {
+        return ResponseEntity.ok(accountService.getTransactions(id, principal.getName()));
     }
 }
 

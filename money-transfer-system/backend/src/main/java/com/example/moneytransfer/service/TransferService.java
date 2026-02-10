@@ -32,7 +32,7 @@ public class TransferService {
     }
 
     @Transactional
-    public TransferResponse transfer(TransferRequest request) {
+    public TransferResponse transfer(TransferRequest request, String username) {
 
         // 1) Idempotency check (if key exists, return prior result)
         if (request.getIdempotencyKey() != null && !request.getIdempotencyKey().isBlank()) {
@@ -61,6 +61,11 @@ public class TransferService {
             // 2) Load accounts
             Account source = accountRepository.findById(request.getFromAccountId())
                     .orElseThrow(() -> new AccountNotFoundException(request.getFromAccountId()));
+
+            // Verify ownership
+            if (!source.getUser().getUsername().equals(username)) {
+                throw new RuntimeException("Unauthorized: Source account does not belong to user");
+            }
 
             Account destination = accountRepository.findById(request.getToAccountId())
                     .orElseThrow(() -> new AccountNotFoundException(request.getToAccountId()));

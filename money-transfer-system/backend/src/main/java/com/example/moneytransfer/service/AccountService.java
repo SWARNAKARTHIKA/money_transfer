@@ -25,22 +25,44 @@ public class AccountService {
     }
 
     @Transactional(readOnly = true)
-    public AccountResponse getAccount(Long id) {
+    public AccountResponse getAccount(Long id, String username) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundException(id));
+        
+        if (!account.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("Unauthorized access to account");
+        }
+        
         return toResponse(account);
     }
 
     @Transactional(readOnly = true)
-    public BigDecimal getBalance(Long id) {
+    public List<AccountResponse> getAccountsByUser(String username) {
+        return accountRepository.findByUserUsername(username).stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public BigDecimal getBalance(Long id, String username) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundException(id));
+
+        if (!account.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("Unauthorized access to account");
+        }
         return account.getBalance();
     }
 
 
     @Transactional(readOnly = true)
-    public List<TransactionLog> getTransactions(Long id) {
+    public List<TransactionLog> getTransactions(Long id, String username) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException(id));
+
+        if (!account.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("Unauthorized access to account");
+        }
         return transactionLogRepository.findByFromAccountIdOrToAccountId(id, id);
     }
 
