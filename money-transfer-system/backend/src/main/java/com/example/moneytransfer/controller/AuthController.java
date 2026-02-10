@@ -38,17 +38,22 @@ public class AuthController {
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
 
-        // Create default account with 1000 balance
-        com.example.moneytransfer.domain.Account account = new com.example.moneytransfer.domain.Account();
-        account.setUser(user);
-        account.setHolderName(user.getUsername());
-        account.setStatus(com.example.moneytransfer.domain.enums.AccountStatus.ACTIVE);
-        account.setBalance(new java.math.BigDecimal("1000.00"));
-        accountRepository.save(account);
+            // Create default account with 1000 balance
+            com.example.moneytransfer.domain.Account account = new com.example.moneytransfer.domain.Account();
+            account.setUser(user);
+            account.setHolderName(user.getUsername());
+            account.setStatus(com.example.moneytransfer.domain.enums.AccountStatus.ACTIVE);
+            account.setBalance(new java.math.BigDecimal("1000.00"));
+            accountRepository.save(account);
 
-        return ResponseEntity.ok("User registered successfully");
+            return ResponseEntity.ok("User registered successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Registration failed: " + e.getMessage());
+        }
     }
 
     @PostMapping("/login")
