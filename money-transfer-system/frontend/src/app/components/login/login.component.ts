@@ -35,7 +35,7 @@ export class LoginComponent {
         next: () => {
           this.router.navigate(['/dashboard']);
         },
-        error: (err) => {
+        error: (err: any) => {
           this.error = 'Invalid username or password';
           this.isLoading = false;
         }

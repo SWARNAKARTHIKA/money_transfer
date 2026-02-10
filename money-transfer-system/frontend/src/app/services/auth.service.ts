@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-public class AuthService {
+export class AuthService {
 
   private apiUrl = 'http://localhost:8080/api/auth';
   private tokenKey = 'auth_token';
