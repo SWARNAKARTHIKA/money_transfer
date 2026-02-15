@@ -30,6 +30,15 @@
   background-color: #f8fafc;
 }
 
+/* Transaction Row Background Colors */
+.history-table .tx-received {
+  background-color: rgba(134, 239, 172, 0.3);
+}
+
+.history-table .tx-sent {
+  background-color: rgba(248, 113, 113, 0.3);
+}
+
 /* Status Badges */
 .status-badge {
   display: inline-flex;

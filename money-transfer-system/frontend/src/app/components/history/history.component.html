@@ -12,8 +12,8 @@
       <table class="history-table">
         <thead>
           <tr>
-            <th>From Account</th>
-            <th>To Account</th>
+            <th>From</th>
+            <th>To</th>
             <th>Amount</th>
             <th>Status</th>
             <th>Date & Time</th>
@@ -21,9 +21,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let tx of transactions">
-            <td>#{{ tx.fromAccountId }}</td>
-            <td>#{{ tx.toAccountId }}</td>
+          <tr *ngFor="let tx of transactions" [ngClass]="getTransactionClass(tx)">
+            <td>{{ tx.fromUsername }}</td>
+            <td>{{ tx.toUsername }}</td>
             <td class="font-bold">{{ tx.amount | currency:'USD' }}</td>
             <td>
               <span class="status-badge" [class]="tx.status.toLowerCase()">
@@ -36,7 +36,7 @@
 
           </tr>
           <tr *ngIf="transactions.length === 0">
-            <td colspan="4" class="text-center py-4">No transactions found.</td>
+            <td colspan="5" class="text-center py-4">No transactions found.</td>
           </tr>
         </tbody>
       </table>

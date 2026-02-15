@@ -25,6 +25,15 @@ export class ApiService {
     );
   }
 
+  getCurrentUser(): Observable<any> {
+    return this.getAccount().pipe(
+      map(account => {
+        if (account) return { username: account.username || account.userName };
+        return { username: '' };
+      })
+    );
+  }
+
   transfer(data: any): Observable<any> {
     const transferPayload = {
       toAccountId: Number(data.toAccount),

@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 })
 export class HistoryComponent implements OnInit {
   transactions: any[] = [];
+  currentUsername: string = '';
 
   constructor(private api: ApiService) {}
 
@@ -29,5 +30,18 @@ export class HistoryComponent implements OnInit {
           new Date(a.createdOn).getTime()
       );
     });
+
+    // Get current user info
+    this.api.getCurrentUser().subscribe((user: any) => {
+      this.currentUsername = user.username;
+    });
+  }
+
+  isMoneyReceived(tx: any): boolean {
+    return tx.toUsername === this.currentUsername;
+  }
+
+  getTransactionClass(tx: any): string {
+    return this.isMoneyReceived(tx) ? 'tx-received' : 'tx-sent';
   }
 }
