@@ -16,6 +16,8 @@
             <th>To Account</th>
             <th>Amount</th>
             <th>Status</th>
+            <th>Date & Time</th>
+
           </tr>
         </thead>
         <tbody>
@@ -28,6 +30,10 @@
                 {{ tx.status }}
               </span>
             </td>
+            <td>
+  {{ tx.createdOn | date:'dd MMM yyyy, hh:mm a' }}
+</td>
+
           </tr>
           <tr *ngIf="transactions.length === 0">
             <td colspan="4" class="text-center py-4">No transactions found.</td>
